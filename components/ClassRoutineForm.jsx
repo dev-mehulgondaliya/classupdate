@@ -141,7 +141,8 @@ export default function ClassRoutineForm() {
         </div>
       )}
 
-      <table className="w-full border mb-4">
+<div className="overflow-x-auto">
+<table className="w-full border mb-4 min-w-[600px]">
         <thead>
           <tr className="bg-gray-200">
             <th className="p-2 border">Lecture</th>
@@ -167,26 +168,26 @@ export default function ClassRoutineForm() {
                 </select>
               </td>
               <td className="border p-2">
-                <input
-                  type="text"
-                  className="w-full border p-1"
-                  value={lec.classwork}
-                  onChange={(e) => handleLectureChange(index, 'classwork', e.target.value)}
-                />
-              </td>
-              <td className="border p-2">
-                <input
-                  type="text"
-                  className="w-full border p-1"
-                  value={lec.homework}
-                  onChange={(e) => handleLectureChange(index, 'homework', e.target.value)}
-                />
-              </td>
+                  <textarea
+                    rows={2}
+                    className="w-full border p-1 resize-y"
+                    value={lec.classwork}
+                    onChange={(e) => handleLectureChange(index, 'classwork', e.target.value)}
+                  />
+                </td>
+                <td className="border p-2">
+                  <textarea
+                    rows={2}
+                    className="w-full border p-1 resize-y"
+                    value={lec.homework}
+                    onChange={(e) => handleLectureChange(index, 'homework', e.target.value)}
+                  />
+                </td>
             </tr>
           ))}
         </tbody>
       </table>
-
+</div>
       <button
         onClick={generateMessage}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
