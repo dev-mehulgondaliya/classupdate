@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const defaultSubjects = [
   'Gujarati', 'Hindi', 'English', 'Maths', 'Science', 'Social Science', 'Computer', 'Sanskrit'
@@ -19,6 +19,7 @@ export default function ClassRoutineForm() {
   const [showAddSubject, setShowAddSubject] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const outputRef = useRef(null);
 
   useEffect(() => {
     const savedSubjects = JSON.parse(localStorage.getItem('customSubjects')) || [];
@@ -50,6 +51,12 @@ export default function ClassRoutineForm() {
     });
 
     setOutput(msg.trim());
+
+    setTimeout(()=>{
+      outputRef.current?.scrollIntoView({
+        behaviour: 'smooth'
+      }, 100);
+    })
   };
 
   const handleDateChange = (e) => {
@@ -199,6 +206,7 @@ export default function ClassRoutineForm() {
   <div className="mt-4">
     <h3 className="font-bold mb-2">Formatted Message:</h3>
     <textarea
+    ref={outputRef}
       rows={12}
       className="w-full p-2 border"
       value={output}
