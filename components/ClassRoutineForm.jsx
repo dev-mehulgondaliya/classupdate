@@ -2,17 +2,23 @@
 import { useState, useEffect, useRef } from 'react';
 
 const defaultSubjects = [
-  'Gujarati', 'Hindi', 'English', 'Maths', 'Science', 'Social Science', 'Computer', 'Sanskrit'
+  'Gujarati', 'Hindi', 'English', 'Maths', 'Science', 'Social Science', 'Computer', 'Sanskrit', 'Sports', 'EVS', 'Dance'
+];
+
+const defaultClassRoom = [
+  'Pink', 'Purple', 'Blue', 'Green', 'A', 'B', 'C', 'D'
 ];
 
 export default function ClassRoutineForm() {
   const [medium, setMedium] = useState('');
   const [standard, setStandard] = useState('');
   const [date, setDate] = useState('');
+  const [classRoom, setClassRoom] = useState('')
   const [day, setDay] = useState('');
   const [lectures, setLectures] = useState(
     Array(6).fill({ subject: '', classwork: '', homework: '' })
   );
+  const [Notes, setNotes] = useState('')
   const [output, setOutput] = useState('');
   const [subjects, setSubjects] = useState(defaultSubjects);
   const [newSubject, setNewSubject] = useState('');
@@ -21,10 +27,22 @@ export default function ClassRoutineForm() {
 
   const outputRef = useRef(null);
 
-  useEffect(() => {
-    const savedSubjects = JSON.parse(localStorage.getItem('customSubjects')) || [];
-    setSubjects([...defaultSubjects, ...savedSubjects]);
-  }, []);
+useEffect(() => {
+  const savedSubjects = JSON.parse(localStorage.getItem('customSubjects')) || [];
+  setSubjects([...defaultSubjects, ...savedSubjects]);
+
+  // Set today's date and day automatically
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const formatted = `${yyyy}-${mm}-${dd}`;
+  setDate(formatted);
+
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  setDay(dayName);
+}, []);
+
 
   const handleLectureChange = (index, field, value) => {
     const newLectures = [...lectures];
@@ -35,10 +53,13 @@ export default function ClassRoutineForm() {
 const generateMessage = () => {
   const isGujarati = medium === 'gujarati';
 
-  let msg = `*STD - ${standard} (${isGujarati ? 'ગુજરાતી માધ્યમ' : 'English Medium'})*\n\n`;
+  const dateObj = new Date(date);
+  const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`;
+
+  let msg = `*STD - ${standard} ${classRoom} (${isGujarati ? 'ગુજરાતી માધ્યમ' : 'English Medium'})*\n\n`;
   msg += isGujarati
-    ? `*તારીખ  :-  ${date}*\n*વાર*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`
-    : `*Date  :-  ${date}*\n*Day*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`;
+    ? `*તારીખ  :-  ${formattedDate}*\n*વાર*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`
+    : `*Date  :-  ${formattedDate}*\n*Day*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`;
 
   lectures.forEach((lec, i) => {
     if (lec.subject || lec.classwork) {
@@ -58,17 +79,23 @@ const generateMessage = () => {
     }
   });
 
+  if(Notes.trim()){
+    msg += isGujarati ? `*🔗 નોટસ 🔗* \n ${Notes}` : `*🔗 Notes 🔗* \n ${Notes}`
+  }
+
   setOutput(msg.trim());
 
-  // Auto scroll to output (if using ref)
+  // Auto scroll to output
   setTimeout(() => {
     outputRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, 100);
 };
 
 
+
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
+
     setDate(selectedDate);
     const dayName = new Date(selectedDate).toLocaleDateString('en-US', {
       weekday: 'long',
@@ -112,8 +139,18 @@ const generateMessage = () => {
         </div>
 
         <div>
+          <label>Class:</label>
+          <select value={classRoom} onChange={(e) => setClassRoom(e.target.value)} className="w-full p-2 border">
+            <option value="">Select Classroom</option>
+            {defaultClassRoom.map((classNo, i) => (
+              <option key={i + 1} value={classNo}>{classNo}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
           <label>Date:</label>
-          <input type="date" value={date} onChange={handleDateChange} className="w-full p-2 border" />
+          <input type="date" value={date}  onChange={handleDateChange} className="w-full p-2 border" />
         </div>
 
         <div>
@@ -203,6 +240,17 @@ const generateMessage = () => {
         </tbody>
       </table>
 </div>
+
+
+<div>
+      <h3 className="text-lg font-semibold">Notes</h3>
+<textarea
+                    rows={2}
+                    className="w-full border p-1 resize-y"
+                    value={Notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+</div>
       <button
         onClick={generateMessage}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -231,6 +279,21 @@ const generateMessage = () => {
 >
   {copied ? "✅ Copied!" : "📋 Copy Message"}
 </button>
+
+{navigator.share && (
+  <button
+    onClick={() => {
+      navigator.share({
+        title: 'Class Update',
+        text: output,
+      });
+    }}
+    className="mt-2 bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700 ml-2"
+  >
+    📤 Share
+  </button>
+)}
+
 
   </div>
 )}
