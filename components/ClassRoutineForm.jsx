@@ -32,32 +32,40 @@ export default function ClassRoutineForm() {
     setLectures(newLectures);
   };
 
-  const generateMessage = () => {
-    let msg = `*STD - ${standard} (${medium === 'gujarati' ? 'ગુજરાતી માધ્યમ' : 'English Medium'})*\n\n`;
-    msg += `*તારીખ  :-  ${date}*\n*વાર*      :- *${day}*\n\n`;
-    msg += `*🔗 Class Work 🔗* \n\n`;
+const generateMessage = () => {
+  const isGujarati = medium === 'gujarati';
 
-    lectures.forEach((lec, i) => {
-      if (lec.subject || lec.classwork) {
-        msg += `*લેક્ચર* - ${i + 1}️⃣ *વિષય - ${lec.subject}*\n     ${lec.classwork}\n\n`;
-      }
-    });
+  let msg = `*STD - ${standard} (${isGujarati ? 'ગુજરાતી માધ્યમ' : 'English Medium'})*\n\n`;
+  msg += isGujarati
+    ? `*તારીખ  :-  ${date}*\n*વાર*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`
+    : `*Date  :-  ${date}*\n*Day*      :- *${day}*\n\n*🔗 Class Work 🔗* \n\n`;
 
-    msg += `*🔗 Home Work 🔗*\n\n`;
-    lectures.forEach((lec) => {
-      if (lec.homework) {
-        msg += `*વિષય - ${lec.subject}*\n    ${lec.homework}\n\n`;
-      }
-    });
+  lectures.forEach((lec, i) => {
+    if (lec.subject || lec.classwork) {
+      msg += isGujarati
+        ? `*લેક્ચર* - ${i + 1}️⃣ *વિષય - ${lec.subject}*\n     ${lec.classwork}\n\n`
+        : `*Lecture* - ${i + 1}️⃣ *Subject - ${lec.subject}*\n     ${lec.classwork}\n\n`;
+    }
+  });
 
-    setOutput(msg.trim());
+  msg += isGujarati ? `*🔗 Home Work 🔗*\n\n` : `*🔗 Homework 🔗*\n\n`;
 
-    setTimeout(()=>{
-      outputRef.current?.scrollIntoView({
-        behaviour: 'smooth'
-      }, 100);
-    })
-  };
+  lectures.forEach((lec) => {
+    if (lec.homework) {
+      msg += isGujarati
+        ? `*વિષય - ${lec.subject}*\n    ${lec.homework}\n\n`
+        : `*Subject - ${lec.subject}*\n    ${lec.homework}\n\n`;
+    }
+  });
+
+  setOutput(msg.trim());
+
+  // Auto scroll to output (if using ref)
+  setTimeout(() => {
+    outputRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+};
+
 
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
