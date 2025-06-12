@@ -261,6 +261,16 @@ const generateMessage = () => {
       {output && (
   <div className="mt-4">
     <h3 className="font-bold mb-2">Formatted Message:</h3>
+    <button
+  onClick={() => {
+    navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000);
+  }}
+  className="mt-2 bg-green-600 text-white px-4 mb-2 py-1 rounded hover:bg-green-700"
+>
+  {copied ? "✅ Copied!" : "📋 Copy Message"}
+</button>
     <textarea
     ref={outputRef}
       rows={12}
@@ -269,16 +279,16 @@ const generateMessage = () => {
       readOnly
     />
 
-<button
-  onClick={() => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1000);
-  }}
-  className="mt-2 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
->
-  {copied ? "✅ Copied!" : "📋 Copy Message"}
-</button>
+
+
+<a
+      href={`https://wa.me/?text=${encodeURIComponent(output)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className=" inline-block bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 mt-2"
+    >
+      🟢 Share on WhatsApp
+    </a>
 
 {navigator.share && (
   <button
@@ -288,11 +298,12 @@ const generateMessage = () => {
         text: output,
       });
     }}
-    className="mt-2 bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700 ml-2"
+    className="mt-2 bg-purple-600 text-white px-2 py-1 rounded hover:bg-purple-700 ml-2"
   >
-    📤 Share
+    📤 Share to Other
   </button>
 )}
+
 
 
   </div>
