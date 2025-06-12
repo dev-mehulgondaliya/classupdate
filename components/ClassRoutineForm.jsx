@@ -80,7 +80,7 @@ const generateMessage = () => {
   });
 
   if(Notes.trim()){
-    msg += isGujarati ? `*🔗 નોટસ 🔗* \n ${Notes}` : `*🔗 Notes 🔗* \n ${Notes}`
+    msg += isGujarati ? `*🔗 Notes 🔗* \n ${Notes}` : `*🔗 Notes 🔗* \n ${Notes}`
   }
 
   setOutput(msg.trim());
