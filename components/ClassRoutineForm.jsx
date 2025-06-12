@@ -193,53 +193,56 @@ const generateMessage = () => {
         </div>
       )}
 
-<div className="overflow-x-auto">
-<table className="w-full border mb-4 min-w-[600px]">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="p-2 border">Lecture</th>
-            <th className="p-2 border">Subject</th>
-            <th className="p-2 border">Classwork</th>
-            <th className="p-2 border">Homework</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lectures.map((lec, index) => (
-            <tr key={index}>
-              <td className="border p-2 text-center">{index + 1}</td>
-              <td className="border p-2">
-                <select
-                  className="w-full p-1 border"
-                  value={lec.subject}
-                  onChange={(e) => handleLectureChange(index, 'subject', e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {subjects.map((subj) => (
-                    <option key={subj} value={subj}>{subj}</option>
-                  ))}
-                </select>
-              </td>
-              <td className="border p-2">
-                  <textarea
-                    rows={2}
-                    className="w-full border p-1 resize-y"
-                    value={lec.classwork}
-                    onChange={(e) => handleLectureChange(index, 'classwork', e.target.value)}
-                  />
-                </td>
-                <td className="border p-2">
-                  <textarea
-                    rows={2}
-                    className="w-full border p-1 resize-y"
-                    value={lec.homework}
-                    onChange={(e) => handleLectureChange(index, 'homework', e.target.value)}
-                  />
-                </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+<div className="overflow-x-auto relative">
+  <table className="w-full border-collapse table-auto mb-4 min-w-[600px]">
+    <thead>
+      <tr className="bg-gray-200">
+        <th className="p-2 border">Lecture</th>
+        <th className="p-2 border sticky left-0 z-10 bg-gray-200 border-l border-r">
+          Subject
+        </th>
+        <th className="p-2 border">Classwork</th>
+        <th className="p-2 border">Homework</th>
+      </tr>
+    </thead>
+    <tbody>
+      {lectures.map((lec, index) => (
+        <tr key={index}>
+          <td className="border p-2 text-center">{index + 1}</td>
+          <td className="border sticky left-0 z-10 bg-white border-l border-r p-2">
+            <select
+              className="w-full p-1 border border-black"
+              value={lec.subject}
+              onChange={(e) => handleLectureChange(index, 'subject', e.target.value)}
+            >
+              <option value="">Select</option>
+              {subjects.map((subj) => (
+                <option key={subj} value={subj}>{subj}</option>
+              ))}
+            </select>
+          </td>
+          <td className="border p-2">
+            <textarea
+              rows={2}
+              className="w-full border p-1 resize-y"
+              value={lec.classwork}
+              onChange={(e) => handleLectureChange(index, 'classwork', e.target.value)}
+            />
+          </td>
+          <td className="border p-2">
+            <textarea
+              rows={2}
+              className="w-full border p-1 resize-y"
+              value={lec.homework}
+              onChange={(e) => handleLectureChange(index, 'homework', e.target.value)}
+            />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 </div>
+
 
 
 <div>
