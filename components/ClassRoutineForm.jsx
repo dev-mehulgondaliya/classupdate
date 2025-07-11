@@ -175,7 +175,10 @@ const generateMessage = () => {
             type="text"
             placeholder="Enter new subject"
             value={newSubject}
-            onChange={(e) => setNewSubject(e.target.value)}
+            onChange={(e) => {
+              let v = e.target.value;
+              setNewSubject(v.trim())
+            }}
             className="p-1 border w-2/3"
           />
           <button
