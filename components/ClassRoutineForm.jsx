@@ -6,7 +6,7 @@ const defaultSubjects = [
 ];
 
 const twelveSubjects = [
-  'Accountancy', 'Business Studies', 'Economics', 'Mathematics',  'Computer Science', 'Statistics', 'Gujarati', 'Hindi'
+  'Accounts', 'Ocm', 'Economics', 'Computer', 'Statistics', 'English', 'Gujarati', 'Sports'
 ];
 
 const defaultClassRoom = [
