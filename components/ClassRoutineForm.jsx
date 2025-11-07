@@ -5,6 +5,10 @@ const defaultSubjects = [
   'Gujarati', 'Hindi', 'English', 'Maths', 'Science', 'Social Science', 'Computer', 'Sanskrit', 'Sports', 'EVS', 'Dance'
 ];
 
+const twelveSubjects = [
+  'Accountancy', 'Business Studies', 'Economics', 'Mathematics',  'Computer Science', 'Statistics', 'Gujarati', 'Hindi'
+];
+
 const defaultClassRoom = [
   'Pink', 'Purple', 'Blue', 'Green', 'A', 'B', 'C', 'D'
 ];
@@ -14,6 +18,7 @@ export default function ClassRoutineForm() {
   const [standard, setStandard] = useState('');
   const [date, setDate] = useState('');
   const [classRoom, setClassRoom] = useState('')
+
   const [day, setDay] = useState('');
   const [lectures, setLectures] = useState(
     Array(6).fill({ subject: '', classwork: '', homework: '' })
@@ -113,6 +118,15 @@ const generateMessage = () => {
       setShowAddSubject(false);
     }
   };
+
+  useEffect(() => {
+    if (standard === '12th') {
+      setSubjects(twelveSubjects);  
+    } else {
+      const savedSubjects = JSON.parse(localStorage.getItem('customSubjects')) || [];
+      setSubjects([...defaultSubjects, ...savedSubjects]);
+    }
+  }, [standard]);
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
